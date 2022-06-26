@@ -3,6 +3,11 @@ let cliente ={
     hora:'',
     pedido:[]
 };
+const categorias = {
+    1:'Comida',
+    2:'Bebidas',
+    3:'Postres'
+}
 
 const btnGuardarCliente = document.querySelector('#guardar-cliente');
 btnGuardarCliente.addEventListener('click',guardarCliente);
@@ -63,14 +68,56 @@ function mostrarPlatillos(platillos){
 
     platillos.forEach(platillo =>{
         const row = document.createElement('div');
-        row.classList.add('row');
+        row.classList.add('row','py-3','border-top');
 
         const nombre = document.createElement('div');
         nombre.classList.add('col-md-4');
         nombre.textContent = platillo.nombre;
 
+        const precio =document.createElement('div');
+        precio.classList.add('col-md-3','fw-bold');
+        precio.textContent = `$${platillo.precio}`;
+
+        const categoria = document.createElement('div');
+        categoria.classList.add('col-md-3');
+        categoria.textContent = categorias[platillo.categoria];
+
+        const inputCantidad = document.createElement('input');
+        inputCantidad.type= 'number';
+        inputCantidad.min = 0;
+        inputCantidad.value = 0;
+        inputCantidad.id= `producto-${platillo.id}`;
+        inputCantidad.classList.add('form-control');
+
+        //Funcion que detecta cantidad y platillo que se agrega
+        inputCantidad.onchange = function(){
+            const cantidad = parseInt(inputCantidad.value);
+
+            agregarPlatillo({...platillo, cantidad});
+        }
+
+        const agregar = document.createElement('div');
+        agregar.classList.add('col-md-2');
+        agregar.appendChild(inputCantidad);
+
         row.appendChild(nombre);
+        row.appendChild(precio);
+        row.appendChild(categoria);
+        row.appendChild(agregar)
+        
         contenido.append(row);
     })
+
+}
+function agregarPlatillo(producto){
+    //Extraer pedido
+    let pedido = cliente;
+    
+    // Revisar cantidad mayor a 0
+    if(producto.cantidad>0){
+        cliente.pedido= [...pedido, producto]
+    }else{
+
+    }
 
 }

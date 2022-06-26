@@ -31,5 +31,5 @@ function guardarCliente(){
         return
     }
 
-        console.log('todos los campos estan llenos')
+        
 }

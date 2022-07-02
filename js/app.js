@@ -111,13 +111,67 @@ function mostrarPlatillos(platillos){
 }
 function agregarPlatillo(producto){
     //Extraer pedido
-    let pedido = cliente;
+    let {pedido} = cliente;
     
     // Revisar cantidad mayor a 0
     if(producto.cantidad>0){
-        cliente.pedido= [...pedido, producto]
+
+        //Comprobar si el elemento existe en el array
+        if(pedido.some(articulo => articulo.id === producto.id)){
+            //YA existe articulo, actualziar cantidad
+            const pedidoActualizado = pedido.map(articulo => {
+                if(articulo.id===producto.id){
+                    articulo.cantidad = producto.cantidad;
+                }
+                return articulo;
+            });
+            // Se asigna el nuevo array al cliente.pedido
+            cliente.pedido= [...pedidoActualizado];
+
+        }else {
+            //El articulo no existe, lo agregamos al array de pedido
+            cliente.pedido= [...pedido, producto];
+        }
+        
     }else{
+        // eliminar elementos cuando la cantidad es 0
+        const resultado = pedido.filter(articulo => articulo.id !== producto.id);
+        cliente.pedido= [...resultado];
 
     }
+
+    // Mostrar resumen de los platillos
+    actualizarResumen();
+}
+function actualizarResumen(){
+    const contenido = document.querySelector('#resumen .contenido');
+
+    const resumen = document.createElement('DIV');
+    resumen.classList.add('col-md-6');
+
+    //Informacion de la mesa
+    const mesa = document.createElement('p');
+    mesa.textContent = 'Mesa ';
+    mesa.classList.add('fw-bold');
+
+    const mesaSpan = document.createElement('span');
+    mesaSpan.textContent = cliente.mesa;
+    mesaSpan.classList.add('fw-normal');
+   
+    //Informacion de la hora
+    const hora = document.createElement('p');
+    hora.textContent = 'Hora ';
+    hora.classList.add('fw-bold');
+
+    const horaSpan = document.createElement('span');
+    horaSpan.textContent = cliente.hora;
+    horaSpan.classList.add('fw-normal');
+    
+    mesa.appendChild(mesaSpan);
+    hora.appendChild(horaSpan);
+
+    contenido.appendChild(mesa);
+    contenido.appendChild(hora);
+
 
 }

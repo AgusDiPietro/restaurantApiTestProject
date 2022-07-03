@@ -141,8 +141,14 @@ function agregarPlatillo(producto){
     }
 
     limpiarHTML();
-    // Mostrar resumen de los platillos
-    actualizarResumen();
+
+    if(cliente.pedido.length) {
+        // Mostrar resumen de los platillos
+       actualizarResumen();
+    }else{
+        mensajePedidoVacio();
+    }
+    
 }
 function actualizarResumen(){
     const contenido = document.querySelector('#resumen .contenido');
@@ -222,6 +228,11 @@ function actualizarResumen(){
         const btnEliminar = document.createElement('button');
         btnEliminar.classList.add('btn','btn-danger');
         btnEliminar.textContent = 'Eliminar el pedido'
+
+        // Funcion eliminar pedido
+        btnEliminar.onclick = function (){
+            eliminarProducto(id);
+        }
         //Agregar valores a sus contenederoes 
         cantidadEl.appendChild(cantidadValor);
         precioEl.appendChild(precioValor);
@@ -256,4 +267,32 @@ function limpiarHTML(){
 }
 function calcularSubtotal(precio, cantidad){
     return `$${precio * cantidad}`
+}
+function eliminarProducto(id){
+    const {pedido} = cliente;
+    const resultado = pedido.filter(articulo => articulo.id !== id);
+    cliente.pedido = [...resultado];
+
+    limpiarHTML();
+
+    if(cliente.pedido.length) {
+        // Mostrar resumen de los platillos
+       actualizarResumen();
+    }else{
+        mensajePedidoVacio();
+    }
+    //El producto se elimino, regresamos cantidad a 0 en el formulario
+    const productoEliminado = `#producto-${id}`;
+    const inputEliminado = document.querySelector(productoEliminado);
+    inputEliminado.value = 0;
+}
+function mensajePedidoVacio (){
+    const contenido = document.querySelector('#resumen .contenido')
+    
+    const texto = document.createElement('p');
+    texto.classList.add('text-center');
+    texto.textContent = 'Añade elementos al pedido';
+
+    contenido.appendChild(texto);
+
 }

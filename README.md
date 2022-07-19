@@ -1,3 +1,3 @@
-# API-restaurante---Proyecto-Prueba
-Creacion de API con consumos y propinas, para simular un pedido de una mesa de restaruante
-Utilizando Node.js y jason-server
+
+Creation of an API with consummation and tips, to simulate an order from a restaurant table.
+Using Node.js and jason-server
